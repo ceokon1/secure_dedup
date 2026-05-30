@@ -1,0 +1,37 @@
+sequenceDiagram
+    participant C as CLI
+    participant A as API
+    participant D as DB
+    participant M as MinIO
+
+    C->>C: Hash file
+    C->>C: OPRF/mock -> file_key
+    C->>C: HKDF -> enc_key, pow_seed
+    C->>C: Ed25519 seed -> pk_pow, tag
+    C->>A: POST /files/check
+    A->>D: find file by tag
+    D-->>A: exists or not exists
+
+    alt tag exists
+        A-->>C: exists=true
+        C->>A: POST /files/challenge
+        A->>D: store nonce and TTL
+        A-->>C: nonce and context
+        C->>C: sign(context,user_id,tag,nonce)
+        C->>A: POST /files/claim
+        A->>D: verify signature with pk_pow
+        A->>D: insert user_files
+        A-->>C: claimed
+    else tag missing
+        C->>C: AES-GCM encrypt file
+        C->>A: POST /files/upload/init
+        A->>D: create upload_session
+        A-->>C: session_id and presigned PUT URL
+        C->>M: PUT ciphertext
+        C->>A: POST /files/upload/complete
+        A->>M: stat object
+        A->>D: create files row if absent
+        A->>D: create user_files row
+        A->>D: mark session completed
+        A-->>C: file_id
+    end

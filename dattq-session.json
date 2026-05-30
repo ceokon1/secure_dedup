@@ -1,0 +1,6 @@
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MGMzYTBmNS04Zjc4LTRiZTgtODZjNi1iMzA5ZGY0OThjNTEiLCJpYXQiOjE3ODAxNDc5ODgsImV4cCI6MTc4MDIzNDM4OH0.ziUy7Za0faLZsTT8_DI1sclzvpGTOWCWTXlHqE3e7rw",
+  "user_id": "60c3a0f5-8f78-4be8-86c6-b309df498c51",
+  "email": "dattq@example.com",
+  "api_base_url": "http://localhost:8000"
+}
