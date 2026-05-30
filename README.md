@@ -1,3 +1,5 @@
+# Secure dedup cloud storage
+
 cp .env.example .env
 docker compose up --build
 
